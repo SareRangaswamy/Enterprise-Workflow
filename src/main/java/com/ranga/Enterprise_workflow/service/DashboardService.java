@@ -1,30 +1,37 @@
 package com.ranga.Enterprise_workflow.service;
 
 import com.ranga.Enterprise_workflow.dto.DashboardResponse;
+import com.ranga.Enterprise_workflow.repository.AttendanceRepository;
 import com.ranga.Enterprise_workflow.repository.Departmentrepository;
 import com.ranga.Enterprise_workflow.repository.EmployeeRepository;
-import com.ranga.Enterprise_workflow.repository.ProjectRepository;
-import com.ranga.Enterprise_workflow.repository.TaskRepository;
+import com.ranga.Enterprise_workflow.repository.Leaverepository;
+import com.ranga.Enterprise_workflow.repository.PayrollRepository;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 
 @Service
 public class DashboardService {
 
     private final EmployeeRepository employeeRepository;
     private final Departmentrepository departmentRepository;
-    private final ProjectRepository projectRepository;
-    private final TaskRepository taskRepository;
+    private final AttendanceRepository attendanceRepository;
+    private final Leaverepository leaveRepository;
+    private final PayrollRepository payrollRepository;
 
     public DashboardService(EmployeeRepository employeeRepository,
                             Departmentrepository departmentRepository,
-                            ProjectRepository projectRepository,
-                            TaskRepository taskRepository) {
+                            AttendanceRepository attendanceRepository,
+                            Leaverepository leaveRepository,
+                            PayrollRepository payrollRepository) {
 
         this.employeeRepository = employeeRepository;
         this.departmentRepository = departmentRepository;
-        this.projectRepository = projectRepository;
-        this.taskRepository = taskRepository;
+        this.attendanceRepository = attendanceRepository;
+        this.leaveRepository = leaveRepository;
+        this.payrollRepository = payrollRepository;
     }
+
     public DashboardResponse getDashboardDetails() {
 
         DashboardResponse response = new DashboardResponse();
@@ -33,17 +40,14 @@ public class DashboardService {
 
         response.setTotalDepartments(departmentRepository.count());
 
-        response.setTotalProjects(projectRepository.count());
+        response.setPresentToday(
+                attendanceRepository.findByAttendanceDate(LocalDate.now()).size());
 
-        response.setTotalTasks(taskRepository.count());
+        response.setEmployeesOnLeave(
+                leaveRepository.countByStatus("APPROVED"));
 
-        response.setCompletedTasks(taskRepository.countByStatus("COMPLETED"));
-
-        response.setPendingTasks(taskRepository.countByStatus("PENDING"));
-
-        response.setHighPriorityTasks(taskRepository.countByPriority("HIGH"));
-
-        response.setLowPriorityTasks(taskRepository.countByPriority("LOW"));
+        response.setTotalPayrolls(
+                payrollRepository.count());
 
         return response;
     }

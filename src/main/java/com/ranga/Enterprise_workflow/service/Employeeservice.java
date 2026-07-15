@@ -1,26 +1,21 @@
 package com.ranga.Enterprise_workflow.service;
+
 import com.ranga.Enterprise_workflow.dto.EmployeeRequestDto;
 import com.ranga.Enterprise_workflow.dto.EmployeeResponseDto;
-
 import com.ranga.Enterprise_workflow.entity.Department;
-import com.ranga.Enterprise_workflow.file.S3FileStorageService;
 import com.ranga.Enterprise_workflow.entity.Employee;
 import com.ranga.Enterprise_workflow.exception.ResourceNotFoundException;
-import org.springframework.web.multipart.MultipartFile;
-import java.io.IOException;
-
+import com.ranga.Enterprise_workflow.file.S3FileStorageService;
 import com.ranga.Enterprise_workflow.repository.Departmentrepository;
 import com.ranga.Enterprise_workflow.repository.EmployeeRepository;
 import org.slf4j.Logger;
-
-import java.util.List;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.List;
 
 @Service
 public class Employeeservice {
@@ -43,53 +38,47 @@ public class Employeeservice {
         this.emailService = emailService;
         this.s3FileStorageService = s3FileStorageService;
     }
-    // create employee
 
-     // Create Employee
-     public EmployeeResponseDto saveEmployee(EmployeeRequestDto dto) {
+    // ===========================
+    // CREATE EMPLOYEE
+    // ===========================
+    public EmployeeResponseDto saveEmployee(EmployeeRequestDto dto) {
 
-         logger.info("Creating employee: {}", dto.getEmployeeName());
+        logger.info("Creating employee: {}", dto.getEmployeeName());
 
-         Department department = departmentRepository.findById(dto.getDepartmentId())
-                 .orElseThrow(() ->
-                         new ResourceNotFoundException(
-                                 "Department not found with ID: " + dto.getDepartmentId()));
+        Department department = departmentRepository.findById(dto.getDepartmentId())
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Department not found with ID: " + dto.getDepartmentId()));
 
-         Employee employee = new Employee();
+        Employee employee = new Employee();
 
-         employee.setEmployeeName(dto.getEmployeeName());
-         employee.setEmail(dto.getEmail());
-         employee.setPhone(dto.getPhone());
-         employee.setDesignation(dto.getDesignation());
-         employee.setSalary(dto.getSalary());
-         employee.setDepartment(department);
+        employee.setEmployeeName(dto.getEmployeeName());
+        employee.setEmail(dto.getEmail());
+        employee.setPhone(dto.getPhone());
+        employee.setDesignation(dto.getDesignation());
+        employee.setSalary(dto.getSalary());
+        employee.setDepartment(department);
 
-         Employee savedEmployee = employeeRepository.save(employee);
+        Employee savedEmployee = employeeRepository.save(employee);
 
-         logger.info("Employee created successfully with ID: {}", savedEmployee.getId());
+        logger.info("Employee created successfully with ID: {}", savedEmployee.getId());
 
-         // Send Welcome Email
-         emailService.sendEmail(
-                 savedEmployee.getEmail(),
-                 "Welcome to Enterprise Workflow",
-                 "Hi " + savedEmployee.getEmployeeName()
-                         + ",\n\n"
-                         + "Welcome to Enterprise Workflow!\n"
-                         + "Your employee account has been created successfully.\n\n"
-                         + "Regards,\n"
-                         + "Enterprise Workflow Team"
-         );
+        emailService.sendWelcomeEmail(
+                savedEmployee.getEmail(),
+                savedEmployee.getEmployeeName()
+        );
 
-         return mapToResponse(savedEmployee);
-     }
-    // Get All Employees with Pagination and Sorting
+        return mapToResponse(savedEmployee);
+    }
+
+    // ===========================
+    // GET ALL EMPLOYEES
+    // ===========================
     public Page<Employee> getAllEmployees(int page,
                                           int size,
                                           String sortBy,
                                           String direction) {
-
-        logger.info("Fetching employees - Page: {}, Size: {}, SortBy: {}, Direction: {}",
-                page, size, sortBy, direction);
 
         Sort sort = direction.equalsIgnoreCase("desc")
                 ? Sort.by(sortBy).descending()
@@ -100,37 +89,28 @@ public class Employeeservice {
         return employeeRepository.findAll(pageable);
     }
 
-    // Search Employee By Name
+    // ===========================
+    // SEARCH
+    // ===========================
     public List<Employee> searchEmployeeByName(String name) {
 
-        logger.info("Searching employees with name: {}", name);
-
-        List<Employee> employees =
-                employeeRepository.findByEmployeeNameContainingIgnoreCase(name);
-
-        if (employees.isEmpty()) {
-            logger.warn("No employees found with name: {}", name);
-        }
-
-        return employees;
+        return employeeRepository.findByEmployeeNameContainingIgnoreCase(name);
     }
 
-    // Get Employee By ID
+    // ===========================
+    // GET BY ID
+    // ===========================
     public Employee getEmployeeById(Long id) {
 
-        logger.info("Fetching employee with ID: {}", id);
-
         return employeeRepository.findById(id)
-                .orElseThrow(() -> {
-                    logger.error("Employee not found with ID: {}", id);
-                    return new ResourceNotFoundException("Employee not found with ID: " + id);
-                });
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Employee not found with ID: " + id));
     }
 
-    // Update Employee
+    // ===========================
+    // UPDATE
+    // ===========================
     public Employee updateEmployee(Long id, Employee employee) {
-
-        logger.info("Updating employee with ID: {}", id);
 
         Employee existingEmployee = getEmployeeById(id);
 
@@ -140,83 +120,81 @@ public class Employeeservice {
         existingEmployee.setDesignation(employee.getDesignation());
         existingEmployee.setSalary(employee.getSalary());
 
-        Long departmentId = employee.getDepartment().getId();
-
-        Department department = departmentRepository.findById(departmentId)
-                .orElseThrow(() -> {
-                    logger.error("Department not found with ID: {}", departmentId);
-                    return new ResourceNotFoundException("Department not found with ID: " + departmentId);
-                });
+        Department department = departmentRepository.findById(
+                        employee.getDepartment().getId())
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Department not found with ID: "
+                                        + employee.getDepartment().getId()));
 
         existingEmployee.setDepartment(department);
 
         Employee updatedEmployee = employeeRepository.save(existingEmployee);
 
-        logger.info("Employee updated successfully with ID: {}", updatedEmployee.getId());
+        emailService.sendEmployeeUpdatedEmail(
+                updatedEmployee.getEmail(),
+                updatedEmployee.getEmployeeName()
+        );
 
         return updatedEmployee;
     }
 
-
-    // Filter Employees By Designation
+    // ===========================
+    // FILTER DESIGNATION
+    // ===========================
     public List<Employee> filterByDesignation(String designation) {
 
-        logger.info("Filtering employees by designation: {}", designation);
-
-        List<Employee> employees =
-                employeeRepository.findByDesignationContainingIgnoreCase(designation);
-
-        if (employees.isEmpty()) {
-            logger.warn("No employees found with designation: {}", designation);
-        }
-
-        return employees;
+        return employeeRepository.findByDesignationContainingIgnoreCase(designation);
     }
 
-    // Filter Employees By Department
+    // ===========================
+    // FILTER DEPARTMENT
+    // ===========================
     public List<Employee> filterByDepartment(Long departmentId) {
 
-        logger.info("Filtering employees by department ID: {}", departmentId);
-
-        List<Employee> employees =
-                employeeRepository.findByDepartmentId(departmentId);
-
-        if (employees.isEmpty()) {
-            logger.warn("No employees found for department ID: {}", departmentId);
-        }
-
-        return employees;
+        return employeeRepository.findByDepartmentId(departmentId);
     }
 
-
-    public String uploadProfileImage(Long employeeId, MultipartFile file) throws IOException {
+    // ===========================
+    // PROFILE IMAGE
+    // ===========================
+    public String uploadProfileImage(Long employeeId,
+                                     MultipartFile file) throws IOException {
 
         Employee employee = getEmployeeById(employeeId);
 
-        // Upload image to AWS S3 and get the full URL
         String imageUrl = s3FileStorageService.uploadFile(file);
 
-        // Save the URL in the employee table
         employee.setProfileImageUrl(imageUrl);
 
         employeeRepository.save(employee);
 
+        emailService.sendProfileImageUploadedEmail(
+                employee.getEmail(),
+                employee.getEmployeeName()
+        );
+
         return imageUrl;
     }
 
-
-    // Delete Employee
+    // ===========================
+    // DELETE
+    // ===========================
     public void deleteEmployee(Long id) {
-
-        logger.info("Deleting employee with ID: {}", id);
 
         Employee employee = getEmployeeById(id);
 
-        employeeRepository.delete(employee);
+        emailService.sendEmployeeDeletedEmail(
+                employee.getEmail(),
+                employee.getEmployeeName()
+        );
 
-        logger.info("Employee deleted successfully with ID: {}", id);
+        employeeRepository.delete(employee);
     }
 
+    // ===========================
+    // DTO MAPPING
+    // ===========================
     private EmployeeResponseDto mapToResponse(Employee employee) {
 
         EmployeeResponseDto dto = new EmployeeResponseDto();

@@ -1,32 +1,21 @@
 package com.ranga.Enterprise_workflow.dto;
 
 public class DashboardResponse {
-    private long highPriorityTasks;
-
-    private long lowPriorityTasks;
 
     private long totalEmployees;
     private long totalDepartments;
+    private long presentToday;
+    private long employeesOnLeave;
+    private long totalPayrolls;
+
     private long totalProjects;
     private long totalTasks;
     private long completedTasks;
     private long pendingTasks;
+    private long highPriorityTasks;
+    private long lowPriorityTasks;
 
     public DashboardResponse() {
-    }
-
-    public DashboardResponse(long totalEmployees,
-                             long totalDepartments,
-                             long totalProjects,
-                             long totalTasks,
-                             long completedTasks,
-                             long pendingTasks) {
-        this.totalEmployees = totalEmployees;
-        this.totalDepartments = totalDepartments;
-        this.totalProjects = totalProjects;
-        this.totalTasks = totalTasks;
-        this.completedTasks = completedTasks;
-        this.pendingTasks = pendingTasks;
     }
 
     public long getTotalEmployees() {
@@ -43,6 +32,30 @@ public class DashboardResponse {
 
     public void setTotalDepartments(long totalDepartments) {
         this.totalDepartments = totalDepartments;
+    }
+
+    public long getPresentToday() {
+        return presentToday;
+    }
+
+    public void setPresentToday(long presentToday) {
+        this.presentToday = presentToday;
+    }
+
+    public long getEmployeesOnLeave() {
+        return employeesOnLeave;
+    }
+
+    public void setEmployeesOnLeave(long employeesOnLeave) {
+        this.employeesOnLeave = employeesOnLeave;
+    }
+
+    public long getTotalPayrolls() {
+        return totalPayrolls;
+    }
+
+    public void setTotalPayrolls(long totalPayrolls) {
+        this.totalPayrolls = totalPayrolls;
     }
 
     public long getTotalProjects() {

@@ -3,7 +3,7 @@ package com.ranga.Enterprise_workflow.service;
 import com.ranga.Enterprise_workflow.dto.LoginRequest;
 import com.ranga.Enterprise_workflow.entity.User;
 import com.ranga.Enterprise_workflow.jwt.JwtService;
-import com.ranga.Enterprise_workflow.repository.UserRepository;
+import com.ranga.Enterprise_workflow.repository.Userrepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -12,11 +12,11 @@ import java.util.Optional;
 @Service
 public class UserService {
 
-    private final UserRepository userRepository;
+    private final Userrepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
 
-    public UserService(UserRepository userRepository,
+    public UserService(Userrepository userRepository,
                        PasswordEncoder passwordEncoder,
                        JwtService jwtService) {
         this.userRepository = userRepository;

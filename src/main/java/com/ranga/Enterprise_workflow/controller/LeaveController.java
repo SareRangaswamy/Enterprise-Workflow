@@ -1,7 +1,7 @@
 package com.ranga.Enterprise_workflow.controller;
 
 import com.ranga.Enterprise_workflow.entity.Leave;
-import com.ranga.Enterprise_workflow.service.LeaveService;
+import com.ranga.Enterprise_workflow.service.Leaveservice;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -17,9 +17,9 @@ import java.util.List;
 @RequestMapping("/api/leaves")
 public class LeaveController {
 
-    private final LeaveService leaveService;
+    private final Leaveservice leaveService;
 
-    public LeaveController(LeaveService leaveService) {
+    public LeaveController(Leaveservice leaveService) {
         this.leaveService = leaveService;
     }
 
