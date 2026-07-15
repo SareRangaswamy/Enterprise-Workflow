@@ -183,7 +183,7 @@ http://localhost:8080/swagger-ui/index.html
 
 B.Tech Computer Science Engineering
 
-Java Full Stack Developer
+Java Backend  Developer
 
 ---
 
