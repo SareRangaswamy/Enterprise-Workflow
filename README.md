@@ -120,15 +120,16 @@ Available authentication APIs:
 
 # 📄 API Documentation
 
-Swagger UI
+ # 🌐 Live API
 
-```
+The application is deployed on AWS EC2.
+
+### Swagger UI
+
 http://16.16.216.12:8080/swagger-ui/index.html
-```
 
-OpenAPI JSON
+### OpenAPI Documentation
 
-```
 http://16.16.216.12:8080/v3/api-docs
 ```
 
