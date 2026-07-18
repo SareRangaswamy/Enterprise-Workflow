@@ -1,192 +1,219 @@
-# 🚀 Enterprise Workflow & Collaboration Platform
+ # 🚀 Enterprise Workflow Management System (Backend)
 
-A secure and scalable Enterprise Workflow & Collaboration Platform built using **Spring Boot**, **Spring Security**, **JWT Authentication**, and **MySQL**. The application helps organizations manage employees, departments, attendance, leave requests, payroll, and workflow efficiently through REST APIs.
-
----
-
-## 📌 Project Overview
-
-This project provides a centralized system for managing enterprise operations, including:
-
-- Employee Management
-- Department Management
-- Leave Management
-- Attendance Tracking
-- Payroll Management
-- User Authentication & Authorization
-- Dashboard Analytics
-- Email Notifications
-- Profile Image Uploads
+A production-ready **Enterprise Workflow Management System Backend** built with **Spring Boot** following RESTful API architecture. The project provides secure authentication, employee and department management, leave management, password reset with OTP, email notifications, and cloud deployment on AWS.
 
 ---
 
-## ✨ Features
+# 📖 Overview
 
-### 🔐 Authentication & Security
-- JWT Authentication
-- Spring Security
-- Password Encryption
-- Role-Based Access Control
+This backend application is designed to automate enterprise workflow operations by providing secure REST APIs for managing employees, departments, leave requests, attendance, and authentication.
 
-### 👨‍💼 Employee Management
-- Add Employee
-- Update Employee
-- Delete Employee
-- View Employee Details
-
-### 🏢 Department Management
-- Create Department
-- Update Department
-- Delete Department
-- View Departments
-
-### 📅 Leave Management
-- Apply Leave
-- Approve/Reject Leave
-- View Leave History
-
-### ✅ Attendance Management
-- Employee Check-In
-- Employee Check-Out
-- Attendance History
-- Daily Attendance Tracking
-- Email Notification after Check-In/Check-Out
-
-### 💰 Payroll Management
-- Generate Payroll
-- Salary Calculation
-- Bonus & Deductions
-- Net Salary Calculation
-- Payroll Email Notification
-
-### 📊 Dashboard
-- Total Employees
-- Total Departments
-- Employees Present Today
-- Employees on Leave
-- Total Payroll Records
-
-### ☁️ File Upload
-- AWS S3 Profile Image Upload
-
-### 📖 API Documentation
-- Swagger UI Integration
+The application is deployed on **AWS EC2** with **AWS RDS MySQL** and documented using **Swagger OpenAPI**.
 
 ---
 
-## 🛠 Tech Stack
+# ✨ Features
 
-- Java 21
-- Spring Boot 3
-- Spring Security
-- JWT
-- Spring Data JPA
-- Hibernate
-- MySQL
-- Maven
-- Swagger / OpenAPI
-- AWS S3
-- Java Mail Sender
+- 🔐 JWT Authentication
+- 👤 User Registration & Login
+- 🔑 Forgot Password with OTP Verification
+- 🏢 Department Management
+- 👨‍💼 Employee Management
+- 📝 Leave Management
+- 📅 Attendance Management
+- 📧 Email Notifications
+- 🛡 Spring Security
+- 📄 Swagger API Documentation
+- ✅ Bean Validation
+- ⚠ Global Exception Handling
+- ☁ AWS EC2 Deployment
+- 🗄 AWS RDS MySQL Database
 
 ---
 
-## 📂 Project Structure
+# 🛠 Tech Stack
 
-```
+| Technology | Version |
+|------------|---------|
+| Java | 21 |
+| Spring Boot | 3.x |
+| Spring Security | Latest |
+| Spring Data JPA | Latest |
+| Hibernate | Latest |
+| JWT | Latest |
+| MySQL | 8.x |
+| Maven | Latest |
+| Swagger OpenAPI | Latest |
+| AWS EC2 | Deployment |
+| AWS RDS | MySQL Database |
+| Git & GitHub | Version Control |
+
+---
+
+# 📂 Project Structure
+
+```text
 src
  ├── controller
  ├── service
  ├── repository
  ├── entity
  ├── dto
- ├── config
  ├── jwt
+ ├── config
  ├── exception
- └── util
+ └── resources
 ```
 
 ---
 
-## 🔑 Authentication
+# 🔐 Authentication
 
-The application uses JWT Authentication.
+The project uses **JWT (JSON Web Token)** for securing REST APIs.
 
-Public APIs
+Available authentication APIs:
 
 - Register User
 - Login
-
-Protected APIs
-
-- Employee APIs
-- Department APIs
-- Leave APIs
-- Attendance APIs
-- Payroll APIs
-- Dashboard APIs
+- Forgot Password (OTP)
+- Protected Profile API
 
 ---
 
-## 📬 Email Notifications
+# 📚 REST APIs
 
-The system automatically sends email notifications for:
+### Authentication
 
-- Attendance Check-In
-- Attendance Check-Out
-- Payroll Generation
+- Register User
+- Login
+- Forgot Password
+- Profile
+
+### Department
+
+- Create Department
+- Get All Departments
+- Get Department By ID
+- Update Department
+- Delete Department
+
+### Employee
+
+- Create Employee
+- Get Employee
+- Update Employee
+- Delete Employee
+
+### Leave
+
+- Apply Leave
+- Approve Leave
+- Reject Leave
+- View Leave History
+
+### Attendance
+
+- Mark Attendance
+- View Attendance
 
 ---
 
-## 📊 Database
+# 📄 API Documentation
 
-Database Used:
-
-MySQL
-
-Main Tables
-
-- Users
-- Roles
-- Departments
-- Employees
-- Leave
-- Attendance
-- Payroll
-
----
-
-## 📖 Swagger API
-
-After running the application:
+Swagger UI
 
 ```
-http://localhost:8080/swagger-ui/index.html
+http://16.16.216.12:8080/swagger-ui/index.html
+```
+
+OpenAPI JSON
+
+```
+http://16.16.216.12:8080/v3/api-docs
 ```
 
 ---
 
-## 🚀 Future Enhancements
+# ☁ Deployment
 
-- Frontend Integration (React/Angular)
-- Docker Deployment
-- Kubernetes Deployment
+The application is deployed using:
+
+- AWS EC2
+- AWS RDS (MySQL)
+- Linux Systemd Service
+- GitHub
+
+---
+
+# 🔒 Security Features
+
+- JWT Authentication
+- Password Encryption (BCrypt)
+- Role-Based Authorization
+- Protected REST Endpoints
+- Input Validation
+
+---
+
+# 🚀 Getting Started
+
+### Clone Repository
+
+```bash
+git clone https://github.com/SareRangaswamy/Enterprise-Workflow.git
+```
+
+### Navigate
+
+```bash
+cd Enterprise-Workflow
+```
+
+### Build
+
+```bash
+mvn clean install
+```
+
+### Run
+
+```bash
+mvn spring-boot:run
+```
+
+---
+
+# ⚙ Configuration
+
+Create an `application.properties` file with your own configuration for:
+
+- MySQL Database
+- Email (SMTP)
+- AWS S3 (if used)
+- JWT Secret
+
+Do **not** commit sensitive credentials to Git.
+
+---
+
+# 📌 Future Enhancements
+
+- Docker Support
+- CI/CD Pipeline
 - Redis Caching
-- Microservices Architecture
-- Audit Logs
-- Notification Service
+- Monitoring & Logging
+- Frontend Integration
 
 ---
 
-## 👨‍💻 Developed By
+# 👨‍💻 Author
 
 **Ranga Swamy**
 
-B.Tech Computer Science Engineering
+Java Backend Developer
 
-Java Backend  Developer
+GitHub:
+https://github.com/SareRangaswamy
 
 ---
-
-## ⭐ If you like this project
-
-Give this repository a ⭐ on GitHub.
+⭐ If you found this project useful, consider giving it a star.
