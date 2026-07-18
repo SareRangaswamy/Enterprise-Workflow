@@ -17,10 +17,13 @@ public class EmailService {
         this.mailSender = mailSender;
     }
 
-    // ===============================
+    // =====================================================
     // Generic Email
-    // ===============================
-    public void sendEmail(String to, String subject, String body) {
+    // =====================================================
+
+    public void sendEmail(String to,
+                          String subject,
+                          String body) {
 
         SimpleMailMessage message = new SimpleMailMessage();
 
@@ -32,46 +35,111 @@ public class EmailService {
         mailSender.send(message);
     }
 
-    // ===============================
-    // Generic Employee Notification
-    // ===============================
-    public void sendEmployeeNotification(
-            String to,
-            String employeeName,
-            String subject,
-            String message) {
+    // =====================================================
+    // Generic Notification
+    // =====================================================
+
+    public void sendEmployeeNotification(String to,
+                                         String name,
+                                         String subject,
+                                         String message) {
 
         sendEmail(
                 to,
                 subject,
-                "Hello " + employeeName + ",\n\n"
+                "Hello " + name + ",\n\n"
                         + message
-                        + "\n\nThank you,\nEnterprise Workflow Team"
+                        + "\n\nRegards,\nEnterprise Workflow Team"
         );
     }
 
-    // ===============================
-    // Welcome Email
-    // ===============================
-    public void sendWelcomeEmail(
-            String to,
-            String employeeName) {
+    // =====================================================
+    // USER REGISTERED
+    // =====================================================
+
+    public void sendUserRegistrationEmail(String to,
+                                          String name) {
+
+        sendEmployeeNotification(
+                to,
+                name,
+                "Registration Successful",
+                "Welcome to Enterprise Workflow.\n\n"
+                        + "Your account has been registered successfully."
+        );
+    }
+
+    // =====================================================
+    // LOGIN ALERT
+    // =====================================================
+
+    public void sendLoginAlertEmail(String to,
+                                    String name) {
+
+        sendEmployeeNotification(
+                to,
+                name,
+                "New Login Detected",
+                "Your account has been logged in successfully.\n\n"
+                        + "If this wasn't you, please reset your password immediately."
+        );
+    }
+
+    // =====================================================
+    // PASSWORD RESET OTP
+    // =====================================================
+
+    public void sendOtpEmail(String to,
+                             String otp) {
+
+        sendEmail(
+                to,
+                "Password Reset OTP",
+                "Hello,\n\n"
+                        + "Your OTP for password reset is : "
+                        + otp
+                        + "\n\nThis OTP is valid for 10 minutes."
+                        + "\n\nDo NOT share it with anyone."
+                        + "\n\nEnterprise Workflow Team"
+        );
+    }
+
+    // =====================================================
+    // PASSWORD CHANGED
+    // =====================================================
+
+    public void sendPasswordChangedEmail(String to,
+                                         String name) {
+
+        sendEmployeeNotification(
+                to,
+                name,
+                "Password Changed Successfully",
+                "Your password has been changed successfully."
+        );
+    }
+
+    // =====================================================
+    // WELCOME EMPLOYEE
+    // =====================================================
+
+    public void sendWelcomeEmail(String to,
+                                 String employeeName) {
 
         sendEmployeeNotification(
                 to,
                 employeeName,
                 "Welcome to Enterprise Workflow",
-                "Welcome to Enterprise Workflow!\n"
-                        + "Your employee account has been created successfully."
+                "Your employee account has been created successfully."
         );
     }
 
-    // ===============================
-    // Profile Image Uploaded
-    // ===============================
-    public void sendProfileImageUploadedEmail(
-            String to,
-            String employeeName) {
+    // =====================================================
+    // PROFILE IMAGE
+    // =====================================================
+
+    public void sendProfileImageUploadedEmail(String to,
+                                              String employeeName) {
 
         sendEmployeeNotification(
                 to,
@@ -81,81 +149,79 @@ public class EmailService {
         );
     }
 
-    // ===============================
-    // Employee Updated
-    // ===============================
-    public void sendEmployeeUpdatedEmail(
-            String to,
-            String employeeName) {
+    // =====================================================
+    // EMPLOYEE UPDATED
+    // =====================================================
+
+    public void sendEmployeeUpdatedEmail(String to,
+                                         String employeeName) {
 
         sendEmployeeNotification(
                 to,
                 employeeName,
-                "Employee Details Updated",
+                "Employee Updated",
                 "Your employee details have been updated successfully."
         );
     }
 
-    // ===============================
-    // Employee Deleted
-    // ===============================
-    public void sendEmployeeDeletedEmail(
-            String to,
-            String employeeName) {
+    // =====================================================
+    // EMPLOYEE DELETED
+    // =====================================================
+
+    public void sendEmployeeDeletedEmail(String to,
+                                         String employeeName) {
 
         sendEmployeeNotification(
                 to,
                 employeeName,
-                "Employee Account Deleted",
-                "Your employee account has been deleted successfully."
+                "Employee Deleted",
+                "Your employee account has been deleted."
         );
     }
 
-    // ===============================
-    // Leave Applied
-    // ===============================
-    public void sendLeaveAppliedEmail(
-            String to,
-            String employeeName) {
+    // =====================================================
+    // LEAVE APPLIED
+    // =====================================================
+
+    public void sendLeaveAppliedEmail(String to,
+                                      String employeeName) {
 
         sendEmployeeNotification(
                 to,
                 employeeName,
                 "Leave Request Submitted",
-                "Your leave request has been submitted successfully.\n"
-                        + "Current Status : PENDING"
+                "Your leave request has been submitted.\nCurrent Status : PENDING"
         );
     }
 
-    // ===============================
-    // Leave Approved
-    // ===============================
-    public void sendLeaveApprovedEmail(
-            String to,
-            String employeeName) {
+    // =====================================================
+    // LEAVE APPROVED
+    // =====================================================
+
+    public void sendLeaveApprovedEmail(String to,
+                                       String employeeName) {
 
         sendEmployeeNotification(
                 to,
                 employeeName,
                 "Leave Approved",
-                "Congratulations!\n"
-                        + "Your leave request has been APPROVED."
+                "Congratulations!\nYour leave request has been approved."
         );
     }
 
-    // ===============================
-    // Leave Rejected
-    // ===============================
-    public void sendLeaveRejectedEmail(
-            String to,
-            String employeeName) {
+    // =====================================================
+    // LEAVE REJECTED
+    // =====================================================
+
+    public void sendLeaveRejectedEmail(String to,
+                                       String employeeName) {
 
         sendEmployeeNotification(
                 to,
                 employeeName,
                 "Leave Rejected",
-                "We regret to inform you that your leave request has been REJECTED.\n"
-                        + "Please contact your manager for more details."
+                "Your leave request has been rejected.\nPlease contact your manager."
         );
     }
+
 }

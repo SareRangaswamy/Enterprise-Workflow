@@ -1,16 +1,18 @@
 package com.ranga.Enterprise_workflow.controller;
 
+import com.ranga.Enterprise_workflow.dto.ForgotPasswordRequest;
 import com.ranga.Enterprise_workflow.dto.LoginRequest;
 import com.ranga.Enterprise_workflow.entity.User;
 import com.ranga.Enterprise_workflow.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(
         name = "Authentication API",
-        description = "User Registration, Login and Profile REST APIs"
+        description = "User Registration, Login and Forgot Password APIs"
 )
 @RestController
 @RequestMapping("/api/users")
@@ -22,34 +24,43 @@ public class UserController {
         this.userService = userService;
     }
 
-    // Register User
-    @Operation(summary = "Register New User")
-    @ApiResponse(
-            responseCode = "201",
-            description = "User registered successfully"
-    )
+    // ===========================
+    // Register
+    // ===========================
+    @Operation(summary = "Register User")
+    @ApiResponse(responseCode = "201", description = "User Registered Successfully")
     @PostMapping("/register")
-    public User registerUser(@RequestBody User user) {
+    public User register(@RequestBody User user) {
         return userService.saveUser(user);
     }
 
-    // Login User
-    @Operation(summary = "User Login")
-    @ApiResponse(
-            responseCode = "200",
-            description = "Login successful and JWT token generated"
-    )
+    // ===========================
+    // Login
+    // ===========================
+    @Operation(summary = "Login User")
+    @ApiResponse(responseCode = "200", description = "JWT Generated Successfully")
     @PostMapping("/login")
-    public String login(@RequestBody LoginRequest loginRequest) {
-        return userService.login(loginRequest);
+    public String login(@RequestBody LoginRequest request) {
+        return userService.login(request);
     }
 
-    // User Profile
-    @Operation(summary = "Get Logged-in User Profile")
-    @ApiResponse(
-            responseCode = "200",
-            description = "Profile fetched successfully"
-    )
+    // ===========================
+    // Forgot Password
+    // ===========================
+    @Operation(summary = "Send OTP to Email")
+    @PostMapping("/forgot-password")
+    public ResponseEntity<String> forgotPassword(
+            @RequestBody ForgotPasswordRequest request) {
+
+        return ResponseEntity.ok(
+                userService.forgotPassword(request.getEmail())
+        );
+    }
+
+    // ===========================
+    // Profile
+    // ===========================
+    @Operation(summary = "User Profile")
     @GetMapping("/profile")
     public String profile() {
         return "Welcome! JWT Authentication Successful";

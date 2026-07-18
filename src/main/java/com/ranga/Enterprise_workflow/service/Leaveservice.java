@@ -15,17 +15,21 @@ public class Leaveservice {
     private final EmployeeRepository employeeRepository;
     private final EmailService emailService;
 
-    public Leaveservice(Leaverepository leaveRepository,
+    public Leaveservice(Leaverepository leaverepository,
                         EmployeeRepository employeeRepository,
                         EmailService emailService) {
 
-        this.leaverepository =leaveRepository;
+        this.leaverepository = leaverepository;
         this.employeeRepository = employeeRepository;
         this.emailService = emailService;
     }
 
     // Apply Leave
     public Leave applyLeave(Leave leave) {
+
+        if (leave.getEmployee() == null || leave.getEmployee().getId() == null) {
+            throw new RuntimeException("Employee ID is required");
+        }
 
         Employee employee = employeeRepository.findById(
                 leave.getEmployee().getId()
@@ -91,9 +95,7 @@ public class Leaveservice {
 
     // Delete Leave
     public void deleteLeave(Long id) {
-
         Leave leave = getLeaveById(id);
-
         leaverepository.delete(leave);
     }
 }

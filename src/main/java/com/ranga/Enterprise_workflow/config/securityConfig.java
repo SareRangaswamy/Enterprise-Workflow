@@ -18,6 +18,7 @@ public class securityConfig {
 
     public securityConfig(JwtAuthenticationFilter jwtAuthenticationFilter,
                           AuthenticationProvider authenticationProvider) {
+
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.authenticationProvider = authenticationProvider;
     }
@@ -35,18 +36,19 @@ public class securityConfig {
                 .authorizeHttpRequests(auth -> auth
 
                         // ==========================
-                        // Public APIs
+                        // PUBLIC APIs
                         // ==========================
 
                         .requestMatchers(
-                                                "/api/users/register",
-                                                "/api/users/login",
+                                "/api/users/register",
+                                "/api/users/login",
+                                "/api/users/forgot-password",
+                                "/api/users/verify-otp",
+                                "/api/users/reset-password",
 
-                                                // Swagger
-                                                "/v3/api-docs/**",
-                                                "/swagger-ui/**",
-                                                "/swagger-ui.html"
-
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html"
                         ).permitAll()
 
                         // ==========================
@@ -101,7 +103,9 @@ public class securityConfig {
                         // Project APIs
                         // ==========================
 
-                        .requestMatchers("/api/projects/**").authenticated()
+                        .requestMatchers("/api/projects/**")
+                        .authenticated()
+
                         // ==========================
                         // Task APIs
                         // ==========================
@@ -119,10 +123,15 @@ public class securityConfig {
                         .hasRole("ADMIN")
 
                         // ==========================
-                        // Any Other API
+                        // File Upload
                         // ==========================
+
                         .requestMatchers(HttpMethod.POST, "/api/files/upload")
                         .hasAnyRole("ADMIN", "USER")
+
+                        // ==========================
+                        // Remaining APIs
+                        // ==========================
 
                         .anyRequest()
                         .authenticated()

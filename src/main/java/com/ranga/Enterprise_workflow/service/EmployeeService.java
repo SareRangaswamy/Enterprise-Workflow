@@ -18,17 +18,17 @@ import java.io.IOException;
 import java.util.List;
 
 @Service
-public class Employeeservice {
+public class EmployeeService {
 
     private static final Logger logger =
-            LoggerFactory.getLogger(Employeeservice.class);
+            LoggerFactory.getLogger(EmployeeService.class);
 
     private final EmployeeRepository employeeRepository;
     private final Departmentrepository departmentRepository;
     private final EmailService emailService;
     private final S3FileStorageService s3FileStorageService;
 
-    public Employeeservice(EmployeeRepository employeeRepository,
+    public EmployeeService(EmployeeRepository employeeRepository,
                            Departmentrepository departmentRepository,
                            EmailService emailService,
                            S3FileStorageService s3FileStorageService) {
